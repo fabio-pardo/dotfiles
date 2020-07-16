@@ -119,13 +119,13 @@ syntax on
 "-------------------------------------------------------------------------------
 set autoindent
 set backspace=indent,eol,start
-set backupdir="~/.vim/backup/"
+set backupdir="~/.config/nvim/backup//"
 " Give more space for displaying messages.
 set cindent
 set cmdheight=2
 set colorcolumn=100
 set cursorline
-set directory="~/.vim/swap/"
+" set directory="~/.config/nvim/swap//"
 " use space instead of tab
 set expandtab
 " TextEdit might fail if hidden is not set.
@@ -138,6 +138,7 @@ set number
 set nobackup
 set nowritebackup
 set noshowmode
+set noswapfile
 " number of space char inserted for indentation
 set shiftwidth=2
 set signcolumn=yes
@@ -148,18 +149,18 @@ set splitbelow splitright
 set tabstop=2
 set tw=100
 "default updatetime 4000ms is not good for async update
-set updatetime=100
+set updatetime=50
 set undofile
-set undodir="~/.vim/undodir/"
+set undodir="~/.config/nvim/undodir//"
 
 " Share the VIM clipboard with the X11 clipboard
-if has("clipboard")
-  set clipboard=unnamed " copy to the system clipboard
+" if has("clipboard")
+"   set clipboard=unnamed " copy to the system clipboard
      
-  if has("unnamedplus") " X11 support
-    set clipboard+=unnamedplus
-  endif
-endif
+"   if has("unnamedplus") " X11 support
+"     set clipboard+=unnamedplus
+"   endif
+" endif
 
 set whichwrap+=<,>,h,l,[,]
 
@@ -258,6 +259,9 @@ nmap <leader>f  <Plug>(coc-format-selected)
 
 " Use `:Format` to format current buffer
 command! -nargs=0 Format :call CocAction('format')
+
+" Add spacing between pairs
+inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm() : "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
 "------------------------------------------------------------------------------
 "Commands
 "------------------------------------------------------------------------------
@@ -273,7 +277,6 @@ let g:coc_global_extensions = [
   \ 'coc-eslint',
   \ 'coc-prettier',
   \ 'coc-tsserver',
-  \ 'coc-vimlsp'
   \ ]
 
 " Remap for rename current word
@@ -282,3 +285,19 @@ let g:coc_global_extensions = [
 let g:tagbar_map_showproto = "o"
 
 command! -nargs=0 Prettier :CocCommand prettier.formatFile
+
+" --- vim go (polyglot) settings.
+ let g:go_highlight_build_constraints = 1
+ let g:go_highlight_extra_types = 1
+ let g:go_highlight_fields = 1
+ let g:go_highlight_functions = 1
+ let g:go_highlight_methods = 1
+ let g:go_highlight_operators = 1
+ let g:go_highlight_structs = 1
+ let g:go_highlight_types = 1
+ let g:go_highlight_function_parameters = 1
+ let g:go_highlight_function_calls = 1
+ let g:go_highlight_generate_tags = 1
+ let g:go_highlight_format_strings = 1
+ let g:go_highlight_variable_declarations = 1
+ let g:go_auto_sameids = 1
