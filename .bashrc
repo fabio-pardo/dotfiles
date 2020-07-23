@@ -129,6 +129,8 @@ alias mongologin='mongo --port 27017 --authenticationDatabase "admin" -u "fabio"
 alias vim='nvim'
 alias editbash='vim ~/.bashrc'
 alias editvim='vim ~/.config/nvim/init.vim'
+alias checkports='sudo lsof -i -P -n | grep LISTEN'
+alias sourcebash='source ~/.bashrc'
 
 # enable control-s and control-q
 stty -ixon
