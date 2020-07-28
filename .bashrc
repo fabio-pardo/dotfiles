@@ -131,6 +131,7 @@ alias editbash='vim ~/.bashrc'
 alias editvim='vim ~/.config/nvim/init.vim'
 alias checkports='sudo lsof -i -P -n | grep LISTEN'
 alias sourcebash='source ~/.bashrc'
+alias lcapp='mux lcapp'
 
 # enable control-s and control-q
 stty -ixon
@@ -139,3 +140,7 @@ export DISPLAY=10.0.0.209:0
 
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion

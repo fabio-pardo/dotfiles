@@ -23,6 +23,9 @@ Plug 'tpope/vim-eunuch'
 " Show github add/delete in the margin
 Plug 'airblade/vim-gitgutter'
 
+" :Gblame
+Plug 'tpope/vim-fugitive'
+
 " Nice starting screen when just typing <vim>
 Plug 'mhinz/vim-startify'
 
@@ -38,6 +41,15 @@ Plug 'preservim/nerdcommenter'
 " Outline for files
 Plug 'majutsushi/tagbar'
 
+Plug 'pangloss/vim-javascript'    " JavaScript support
+Plug 'leafgarland/typescript-vim' " TypeScript syntax
+Plug 'maxmellon/vim-jsx-pretty'   " JS and JSX syntax
+Plug 'jparise/vim-graphql'        " GraphQL syntax
+Plug 'styled-components/vim-styled-components'
+
+" status/tabline
+Plug 'vim-airline/vim-airline'
+
 call plug#end()
 
 " -------------------------------------------------------------------------------------------------
@@ -45,7 +57,6 @@ call plug#end()
 " -------------------------------------------------------------------------------------------------
 
 set backspace=indent,eol,start
-set backupdir="~/.config/nvim/backup//"
 set cindent
 set colorcolumn=100
 set incsearch
@@ -79,13 +90,11 @@ set laststatus=2                        " Always display the status line
 set number                              " Line numbers
 set cursorline                          " Enable highlighting of the current line
 set showtabline=1                       " Always show tabs
-"set noshowmode                          " We don't need to see things like -- INSERT -- anymore
 set nobackup                            " This is recommended by coc
 set nowritebackup                       " This is recommended by coc
 set updatetime=300                      " Faster completion
 set timeoutlen=500                      " By default timeoutlen is 1000 ms
-set formatoptions-=cro                  " Stop newline continution of comments
-set clipboard=unnamedplus               " Copy paste between vim and everything else`"`
+set clipboard+=unnamedplus               " Copy paste between vim and everything else`"`
  "To wrap lines
 set whichwrap+=<,>,h,l,[,]
 
@@ -93,10 +102,13 @@ set whichwrap+=<,>,h,l,[,]
 " My Mappings
 " -------------------------------------------------------------------------------------------------
 
+" Leader is <Space>
+let mapleader=" "
+
 "Ctrl-C to ESCAPE
 imap <C-c> <Esc>
-" Ctrl-C -> Remove highlights when searching
-map <C-c> :noh<return><esc>
+" Enter again -> Remove highlights when searching
+nnoremap <CR> :noh<CR><CR>
 
 " Use ctrl-[hjkl] to select the active split!
 nmap <silent> <C-k> :wincmd k<CR>
@@ -243,13 +255,13 @@ augroup end
 
 " Applying codeAction to the selected region.
 " Example: `<leader>aap` for current paragraph
-"xmap <leader>a  <Plug>(coc-codeaction-selected)
-"nmap <leader>a  <Plug>(coc-codeaction-selected)
+xmap <leader>a  <Plug>(coc-codeaction-selected)
+nmap <leader>a  <Plug>(coc-codeaction-selected)
 
 " Remap keys for applying codeAction to the current buffer.
-"nmap <leader>ac  <Plug>(coc-codeaction)
+nmap <leader>ac  <Plug>(coc-codeaction)
 " Apply AutoFix to problem on the current line.
-"nmap <leader>qf  <Plug>(coc-fix-current
+nmap <leader>qf  <Plug>(coc-fix-current)
 
 " Map function and class text objects
 " NOTE: Requires 'textDocument.documentSymbol' support from the language server.
