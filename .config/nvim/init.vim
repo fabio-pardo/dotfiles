@@ -17,6 +17,10 @@ Plug 'junegunn/fzf.vim'
 " Navigate and manipulate files in a tree view.
 Plug 'preservim/nerdtree'
 
+" Adds icons to nerdtree
+Plug 'ryanoasis/vim-devicons'
+Plug 'vwxyutarooo/nerdtree-devicons-syntax'
+
 " Helpers for moving and manipulating files / directories.
 Plug 'tpope/vim-eunuch'
 
