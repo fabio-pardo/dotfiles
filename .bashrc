@@ -120,7 +120,7 @@ fi
 
 # Aliases
 alias desktop='cd /mnt/c/Users/fpard/Desktop'
-alias dev='cd /mnt/c/Users/fpard/Documents/Development'
+alias dev='cd ~/Projects'
 alias mux='tmuxinator'
 alias mongostart='mongod --port 27017 --dbpath /var/lib/mongodb --bind_ip 127.0.0.1'
 alias mongostartauth='mongod --auth --port 27017 --dbpath /var/lib/mongodb --bind_ip 127.0.0.1'
@@ -133,10 +133,14 @@ alias checkports='sudo lsof -i -P -n | grep LISTEN'
 alias sourcebash='source ~/.bashrc'
 alias lcapp='mux lcapp'
 
+# Don't use Windows 10 Paths
+PATH=$(/usr/bin/printenv PATH | /usr/bin/perl -ne 'print join(":", grep { !/\/mnt\/[a-z]/ } split(/:/));')
+
 # enable control-s and control-q
 stty -ixon
 
-export DISPLAY=10.0.0.209:0
+export DISPLAY=$(awk '/nameserver / {print $2; exit}' /etc/resolv.conf 2>/dev/null):0
+export LIBGL_ALWAYS_INDIRECT=1
 
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
@@ -144,3 +148,28 @@ export DISPLAY=10.0.0.209:0
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+# Java
+export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
+export PATH=$PATH:$JAVA_HOME/bin
+
+# Flutter
+export FLUTTER_HOME=$HOME/Programs/flutter
+export PATH=$PATH:$FLUTTER_HOME/bin
+
+# Android
+export ANDROID_SDK_ROOT=$HOME/Android/Sdk
+export PATH=$PATH:$ANDROID_SDK_ROOT/tools
+export PATH=$PATH:$ANDROID_SDK_ROOT/emulator
+export PATH=$PATH:$ANDROID_SDK_ROOT/cmdline-tools/latest/bin
+export PATH=$PATH:$ANDROID_SDK_ROOT/cmdline-tools/latest/lib
+
+# VS Code
+export PATH=$PATH:/mnt/c/Users/fpard/AppData/Local/Programs/Microsoft\ VS\ Code/bin/
+
+alias androidemu='~/Android/Sdk/emulator/emulator @p1'
+
+#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
+export SDKMAN_DIR="/home/fabio/.sdkman"
+[[ -s "/home/fabio/.sdkman/bin/sdkman-init.sh" ]] && source "/home/fabio/.sdkman/bin/sdkman-init.sh"
+

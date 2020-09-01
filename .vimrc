@@ -1,22 +1,25 @@
-" Set leader
-let mapleader = ";"
-
-"------------------------------------------------------------------------
-"Plugins
-"------------------------------------------------------------------------
+" Plugins
+" -------------------------------------------------------------------------------------------------
 
 "Directory for the plugins.
 call plug#begin('~/.vim/plugged')
 
+" Completion server
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+
 " Gruvbox theme.
 Plug 'gruvbox-community/gruvbox'
 
-"Integrate fzf with vim. For file finding
+" fuzzy find files
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 
 " Navigate and manipulate files in a tree view.
 Plug 'preservim/nerdtree'
+
+" Adds icons to nerdtree
+Plug 'ryanoasis/vim-devicons'
+Plug 'vwxyutarooo/nerdtree-devicons-syntax'
 
 " Helpers for moving and manipulating files / directories.
 Plug 'tpope/vim-eunuch'
@@ -24,7 +27,7 @@ Plug 'tpope/vim-eunuch'
 " Show github add/delete in the margin
 Plug 'airblade/vim-gitgutter'
 
-" Github Integration with VIM
+" :Gblame
 Plug 'tpope/vim-fugitive'
 
 " Nice starting screen when just typing <vim>
@@ -36,145 +39,159 @@ Plug 'sheerun/vim-polyglot'
 " undo tree
 Plug 'mbbill/undotree'
 
-"Lightline for better statusline/tablines
-Plug 'itchyny/lightline.vim'
-
-" Completion server
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
-
-" Snippets for languages - Required
-" Plug 'honza/vim-snippets' 
-
-" Comment stuff out easily with <gcc>
-Plug 'tpope/vim-commentary'
+"Comment code with ++ in normal/visual mode
+Plug 'preservim/nerdcommenter'
 
 " Outline for files
-" Plug 'majutsushi/tagbar'
+Plug 'majutsushi/tagbar'
 
-" Allows for cursor to stay in position and folds to stay
-" Plug 'tweekmonster/gofmt.vim'
+Plug 'pangloss/vim-javascript'    " JavaScript support
+Plug 'leafgarland/typescript-vim' " TypeScript syntax
+Plug 'maxmellon/vim-jsx-pretty'   " JS and JSX syntax
+Plug 'jparise/vim-graphql'        " GraphQL syntax
+Plug 'styled-components/vim-styled-components'
+
+" status/tabline
+Plug 'vim-airline/vim-airline'
+
 call plug#end()
 
+" -------------------------------------------------------------------------------------------------
+" My Sets 
+" -------------------------------------------------------------------------------------------------
 
-"------------------------------------------------------------------------------
+set backspace=indent,eol,start
+set cindent
+set colorcolumn=100
+set incsearch
+set ignorecase
+set noswapfile
+set signcolumn=yes
+set shortmess+=c
+set tw=100
+" For UndoTree
+set undofile
+set undodir="~/.config/nvim/undodir//"
 
-" Toggle the outline tagbar
-nmap <F8> :TagbarToggle<CR>
+set hidden                              " Required to keep multiple buffers open multiple buffers
+set encoding=utf-8                      " The encoding displayed
+set pumheight=10                        " Makes popup menu smaller
+set fileencoding=utf-8                  " The encoding written to file
+set ruler                               " Show the cursor position all the time
+set cmdheight=2                         " More space for displaying messages
+set iskeyword+=-                        " treat dash separated words as a word text object"
+set mouse=a                             " Enable your mouse
+set splitbelow                          " Horizontal splits will automatically be below
+set splitright                          " Vertical splits will automatically be to the right
+set conceallevel=0                      " So that I can see `"` in markdown files
+set tabstop=2                           " Insert 2 spaces for a tab
+set shiftwidth=2                        " Change the number of space characters inserted for indentation
+set smarttab                            " Makes tabbing smarter will realize you have 2 vs 4
+set expandtab                           " Converts tabs to spaces
+set smartindent                         " Makes indenting smart
+set autoindent                          " Good auto indent
+set laststatus=2                        " Always display the status line
+set number                              " Line numbers
+set cursorline                          " Enable highlighting of the current line
+set showtabline=1                       " Always show tabs
+set nobackup                            " This is recommended by coc
+set nowritebackup                       " This is recommended by coc
+set updatetime=300                      " Faster completion
+set timeoutlen=500                      " By default timeoutlen is 1000 ms
+set clipboard+=unnamedplus               " Copy paste between vim and everything else`"`
+ "To wrap lines
+set whichwrap+=<,>,h,l,[,]
 
-"undo tree show
-nnoremap <c-u> :UndotreeShow<CR>
+" -------------------------------------------------------------------------------------------------
+" My Mappings
+" -------------------------------------------------------------------------------------------------
 
-"fzf map
-map <c-p> :Files<CR>
-map <c-g> :GFiles<CR>
+" Leader is <Space>
+let mapleader=" "
+
+"Ctrl-C to ESCAPE
+imap <C-c> <Esc>
+" Enter again -> Remove highlights when searching
+nnoremap <CR> :noh<CR><CR>
 
 " Use ctrl-[hjkl] to select the active split!
-nmap <silent> <c-k> :wincmd k<CR>
-nmap <silent> <c-j> :wincmd j<CR>
-nmap <silent> <c-h> :wincmd h<CR>
-nmap <silent> <c-l> :wincmd l<CR>
+nmap <silent> <C-k> :wincmd k<CR>
+nmap <silent> <C-j> :wincmd j<CR>
+nmap <silent> <C-h> :wincmd h<CR>
+nmap <silent> <C-l> :wincmd l<CR>
 
-"NerdTree Map
-map <C-n> :NERDTreeToggle<CR>
+" To save Ctrl-S exits out of insert mode
+nmap <C-s> :w<CR>
+imap <C-s> <Esc>:w<CR>
 
-let g:NERDTreeShowHidden=1
-let g:NERDTreeAutoDeleteBuffer=1
-let g:NERDTreeQuitOnOpen=0
+" -------------------------------------------------------------------------------------------------
+" Gruvbox Theme
+" -------------------------------------------------------------------------------------------------
 
+" Set the color scheme
+colorscheme gruvbox
 
-noremap <silent> <C-S>          :update<CR>
-vnoremap <silent> <C-S>         <C-C>:update<CR>
-inoremap <silent> <C-S>         <C-O>:update<CR>
-
-" -----------------------------------------------------------------------------
-" Color settings
-" -----------------------------------------------------------------------------
-
-" Enable 24-bit true colors if your terminal supports it.
 if (has("termguicolors"))
-  " https://github.com/vim/vim/issues/993#issuecomment-255651605
   let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
   let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
-
   set termguicolors
 endif
 
-
-" Set the color scheme.
-colorscheme gruvbox
-
-" Set the color scheme to dark.
 set background=dark
 set t_Co=256
 
-" Gruvbox has a 'hard', 'medium' (default) and 'soft' contrast options.
 let g:gruvbox_contrast_light='hard'
-let g:NERDTreeIgnore = ['^node_modulues$', '.git$']
 
 "This needs to come last, otherwise the colors aren't correct.
 syntax on
 
-"-------------------------------------------------------------------------------
-"Basic Settings
-"-------------------------------------------------------------------------------
-set autoindent
-set backspace=indent,eol,start
-set backupdir="~/.vim/backup/"
-" Give more space for displaying messages.
-set cindent
-set cmdheight=2
-set colorcolumn=100
-set cursorline
-set directory="~/.vim/swap/"
-" use space instead of tab
-set expandtab
-" TextEdit might fail if hidden is not set.
-set hidden
-set incsearch
-set laststatus=2
-" Allow scrolling (just in case :))
-set mouse=a
-set number
-set nobackup
-set nowritebackup
-set noshowmode
-" number of space char inserted for indentation
-set shiftwidth=2
-set signcolumn=yes
-" Don't pass messages to |ins-completion-menu|.
-set shortmess+=c
-set smarttab
-set splitbelow splitright
-set tabstop=2
-set tw=100
-"default updatetime 4000ms is not good for async update
-set updatetime=100
-set undofile
-set undodir="~/.vim/undodir/"
+" -------------------------------------------------------------------------------------------------
+" Commenter
+" -------------------------------------------------------------------------------------------------
+vmap ++ <plug>NERDCommenterToggle
+nmap ++ <plug>NERDCommenterToggle
 
-" Share the VIM clipboard with the X11 clipboard
-if has("clipboard")
-  set clipboard=unnamed " copy to the system clipboard
-     
-  if has("unnamedplus") " X11 support
-    set clipboard+=unnamedplus
-  endif
-endif
+" -------------------------------------------------------------------------------------------------
+" NerdTree
+" -------------------------------------------------------------------------------------------------
 
-set whichwrap+=<,>,h,l,[,]
+" Toggle NerdTree
+map <C-n> :NERDTreeToggle<CR>
+let g:NERDTreeShowHidden=1
 
-"Cursor stuff
-let &t_ti.="\e[1 q"
-let &t_SI.="\e[5 q"
-let &t_EI.="\e[1 q"
-let &t_te.="\e[0 q"
+let NERDTreeIgnore=['\.git$', '\.idea$', '\.vscode$', '\.history$', '^node_modules$']
 
-"--------------------------------------------------------------------------------
-"COC
-"--------------------------------------------------------------------------------
+" -------------------------------------------------------------------------------------------------
+" FZF
+" -------------------------------------------------------------------------------------------------
+
+"fzf map. Show Git Files, All Files
+map <C-p> :Files<CR>
+map <C-g> :GFiles<CR>
+
+" -------------------------------------------------------------------------------------------------
+" undotree
+" -------------------------------------------------------------------------------------------------
+
+" toggle undotree
+nnoremap <C-u> :UndotreeToggle<CR>
+
+" -------------------------------------------------------------------------------------------------
+" Tagbar
+" -------------------------------------------------------------------------------------------------
+
+" Toggle tagbar
+nmap <F8> :TagbarToggle<CR>
+
+
+
+" -------------------------------------------------------------------------------------------------
+" COC
+" -------------------------------------------------------------------------------------------------
 
 " Use tab for trigger completion with characters ahead and navigate.
-" Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
+" NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
+" other plugin before putting this into your config.
 inoremap <silent><expr> <TAB>
       \ pumvisible() ? "\<C-n>" :
       \ <SID>check_back_space() ? "\<TAB>" :
@@ -182,37 +199,37 @@ inoremap <silent><expr> <TAB>
 inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 
 function! s:check_back_space() abort
-    let col = col('.') - 1
-    return !col || getline('.')[col - 1]  =~# '\s'
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
 
-" Use <c-space> to trigger completion.
+" Use <C-space> to trigger completion.
 if has('nvim')
-  inoremap <silent><expr> <c-space> coc#refresh()
+  inoremap <silent><expr> <C-space> coc#refresh()
 else
-  inoremap <silent><expr> <c-@> coc#refresh()
+  inoremap <silent><expr> <C-@> coc#refresh()
 endif
 
-" Use <cr> to confirm completion, `<C-g>u` means break undo chain at current position.
-" Coc only does snippet and additional edit on confirm.
+" Use <cr> to confirm completion, `<C-g>u` means break undo chain at current
+" position. Coc only does snippet and additional edit on confirm.
+" <cr> could be remapped by other vim plugin, try `:verbose imap <CR>`.
 if exists('*complete_info')
-    " Use `complete_info` if your (Neo)Vim version supports it.
-    inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
+  inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
 else
-    imap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+  inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 endif
 
 " Use `[g` and `]g` to navigate diagnostics
 nmap <silent> [g <Plug>(coc-diagnostic-prev)
 nmap <silent> ]g <Plug>(coc-diagnostic-next)
 
-" Remap keys for gotos
+" GoTo code navigation.
 nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
 
-" Use K to show documentation in preview window
+" Use K to show documentation in preview window.
 nnoremap <silent> K :call <SID>show_documentation()<CR>
 
 function! s:show_documentation()
@@ -223,23 +240,36 @@ function! s:show_documentation()
     endif
 endfunction
 
-" Highlight the symbol and its references when holding the cursor
+" Highlight the symbol and its references when holding the cursor.
 autocmd CursorHold * silent call CocActionAsync('highlight')
 
+" Remap for rename current word
+nmap <F2> <Plug>(coc-rename)>
+
+" Formatting selected code.
+"xmap <leader>f  <Plug>(coc-format-selected)
+"nmap <leader>f  <Plug>(coc-format-selected)
+
 augroup mygroup
-    autocmd!
-    " Setup formatexpr specified filetype(s).
-    autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
-    " Update signature help on jump placeholder
-    autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
+  autocmd!
+  " Setup formatexpr specified filetype(s).
+  autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
+  " Update signature help on jump placeholder.
+  autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
 augroup end
+
+" Applying codeAction to the selected region.
+" Example: `<leader>aap` for current paragraph
+xmap <leader>a  <Plug>(coc-codeaction-selected)
+nmap <leader>a  <Plug>(coc-codeaction-selected)
 
 " Remap keys for applying codeAction to the current buffer.
 nmap <leader>ac  <Plug>(coc-codeaction)
 " Apply AutoFix to problem on the current line.
 nmap <leader>qf  <Plug>(coc-fix-current)
 
-" Create mappings for function text object, requires document symbols feature of languageserver.
+" Map function and class text objects
+" NOTE: Requires 'textDocument.documentSymbol' support from the language server.
 xmap if <Plug>(coc-funcobj-i)
 omap if <Plug>(coc-funcobj-i)
 xmap af <Plug>(coc-funcobj-a)
@@ -249,36 +279,22 @@ omap ic <Plug>(coc-classobj-i)
 xmap ac <Plug>(coc-classobj-a)
 omap ac <Plug>(coc-classobj-a)
 
-" Remap for rename current word
-nmap <F2> <Plug>(coc-rename)>
+" Use CTRL-D for selections ranges.
+" Requires 'textDocument/selectionRange' support of LS, ex: coc-tsserver
+nmap <silent> <C-d> <Plug>(coc-range-select)
+xmap <silent> <C-d> <Plug>(coc-range-select)
 
-" Remap for format selected region
-xmap <leader>f  <Plug>(coc-format-selected)
-nmap <leader>f  <Plug>(coc-format-selected)
-
-" Use `:Format` to format current buffer
+" Add `:Format` command to format current buffer.
 command! -nargs=0 Format :call CocAction('format')
-"------------------------------------------------------------------------------
-"Commands
-"------------------------------------------------------------------------------
-"Extra
-let g:NERDTreeHighlightCursorline = '0' "makes NerdTree faster"
-let g:AutoPairsFlyMode='1' "Auto pairs correction"
 
-"coc
-let g:coc_global_extensions = [
-  \ 'coc-pairs',
-  \ 'coc-snippets',
-  \ 'coc-json',
-  \ 'coc-eslint',
-  \ 'coc-prettier',
-  \ 'coc-tsserver',
-  \ 'coc-vimlsp'
-  \ ]
+" Add `:Fold` command to fold current buffer.
+command! -nargs=? Fold :call     CocAction('fold', <f-args>)
 
-" Remap for rename current word
+" Add `:OR` command for organize imports of the current buffer.
+command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
 
-" Remape Tagbar show prototype to o (default is space, but it fuck up SPACE + number)
-let g:tagbar_map_showproto = "o"
+" Add spacing between pairs
+inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm() : "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
 
+" Prettier on save
 command! -nargs=0 Prettier :CocCommand prettier.formatFile
