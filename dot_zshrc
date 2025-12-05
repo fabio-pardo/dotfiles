@@ -2,6 +2,7 @@
 export ZSH="$HOME/.oh-my-zsh"
 ZSH_THEME="robbyrussell"
 plugins=(
+  chezmoi
   git
   you-should-use
   zsh-autosuggestions
