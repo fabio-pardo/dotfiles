@@ -1,0 +1,17 @@
+# Homebrew
+eval "$(/opt/homebrew/bin/brew shellenv)"
+
+# XDG
+export XDG_CONFIG_HOME="$HOME/.config"
+
+# Starship
+export STARSHIP_CONFIG="$XDG_CONFIG_HOME/starship/starship.toml"
+
+# tmux config path
+export TMUX_CONF="$XDG_CONFIG_HOME/tmux/tmux.conf"
+
+# bin programs path
+export PATH="$HOME/.local/bin:$PATH"
+
+# Editor
+export EDITOR="nvim"
