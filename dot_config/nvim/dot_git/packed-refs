@@ -1,0 +1,8 @@
+# pack-refs with: peeled fully-peeled sorted 
+f2415f3f1d95ac1f078e9b1bb6216aa95e588180 refs/remotes/origin/base_lazy_vim
+588fb6995772d174b34a7dc51bd17ec03f410cc1 refs/remotes/origin/base_lunarvim
+930142d680eab7c7275b1328e91f5cc7e4705bd6 refs/remotes/origin/clean
+4167f45ee77defb7c84ad984bc291bb628f8d18e refs/remotes/origin/experimental
+5a363f52d3c7d0050e93efaab2a703134e53ee14 refs/remotes/origin/lazyvim
+01a17d7096970dbfc15bf08edddbf37d552d1e83 refs/remotes/origin/main
+e8c8c0cefb46f2f8207aa0729735be80b430b381 refs/remotes/origin/nvchad
