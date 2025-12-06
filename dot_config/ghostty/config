@@ -44,6 +44,6 @@
 # resize-overlay-duration = 4s 200ms
 
 theme = Gruvbox Dark
-font-family = JetBrainsMono Nerd Font
+font-family = Hack Nerd Font Mono
 title = "Terminal"
 macos-titlebar-proxy-icon = hidden
