@@ -12,6 +12,7 @@ npm install -g mcp-hub@latest
 pyenv install 3.13.1
 pyenv local 3.13.1
 uv tool install "vectorcode<1.0.0"
+pyenv local --unset
 ```
 
 ### Common commands
