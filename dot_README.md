@@ -3,6 +3,15 @@
 ### Installation
 ```bash
 brew bundle install --file="~/.config/homebrew/Brewfile"
+
+# MCHub
+nvm install node
+npm install -g mcp-hub@latest
+
+# VectorCode
+pyenv install 3.13.1
+pyenv local 3.13.1
+uv tool install "vectorcode<1.0.0"
 ```
 
 ### Common commands
@@ -35,4 +44,9 @@ chezmoi add <file>
 **Check status:**
 ```bash
 chezmoi status
+```
+
+**New generated Brewfile**
+```bash
+brew bundle dump --file=~/.config/homebrew/Brewfile --force
 ```
