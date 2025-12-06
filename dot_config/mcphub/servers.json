@@ -1,1 +1,46 @@
-{"mcpServers":{}}
+{
+  "mcpServers": {
+    "context7": {
+      "args": [
+        "-y",
+        "@upstash/context7-mcp"
+      ],
+      "command": "npx",
+      "env": {
+        "DEFAULT_MINIMUM_TOKENS": "600"
+      }
+    },
+    "sequentialthinking": {
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-sequential-thinking"
+      ],
+      "command": "npx"
+    },
+    "virgin-voyages-mxp": {
+      "args": [
+        "/Users/fabio/dev/virgin_voyages/mxp-mcp-server/src/mcp_server/server.py",
+        "--transport",
+        "stdio"
+      ],
+      "command": "python",
+      "disabled": false,
+      "env": {
+        "MXP_BASE_URL": "http://10.2.225.226/API/MXP_Virgin.exe",
+        "MXP_PASSWORD": "!veryS4f3",
+        "MXP_USERNAME": "MXP-API-User"
+      }
+    }
+  },
+  "nativeMCPServers": {
+    "mcphub": {
+      "disabled": false
+    },
+    "neovim": {
+      "disabled": false,
+      "disabled_prompts": [
+        "parrot"
+      ]
+    }
+  }
+}
