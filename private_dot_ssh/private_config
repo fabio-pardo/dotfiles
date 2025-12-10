@@ -1,4 +1,17 @@
 Host *
 	IdentityAgent "~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
 
+# Default GitHub (Qued)
+Host github.com
+    User git
+    IdentityFile ~/.ssh/qued.pub
+    IdentitiesOnly yes
+
+# Personal GitHub
+Host gh-personal
+    HostName github.com
+    User git
+    IdentityFile ~/.ssh/personal.pub
+    IdentitiesOnly yes
+
 Include ~/.ssh/1Password/config
