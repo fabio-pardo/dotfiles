@@ -19,3 +19,6 @@ export EDITOR="nvim"
 # GitHub
 export GITHUB_USERNAME="fabio-pardo"
 export GITHUB_USERNAME_QUED="fabio-qued"
+
+# Google Cloud SDK
+export PATH=/opt/homebrew/share/google-cloud-sdk/bin:"$PATH"

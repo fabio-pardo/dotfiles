@@ -30,6 +30,21 @@
         "MXP_PASSWORD": "!veryS4f3",
         "MXP_USERNAME": "MXP-API-User"
       }
+    },
+    "survey-bigquery": {
+      "args": [
+        "--directory",
+        "/Users/fabio/dev/survey-mcp",
+        "run",
+        "src/mcp_server/server.py",
+        "--transport",
+        "stdio"
+      ],
+      "command": "uv",
+      "disabled": false,
+      "env": {
+        "BIGQUERY_PROJECT_ID": "tech-ai-sandbox"
+      }
     }
   },
   "nativeMCPServers": {
