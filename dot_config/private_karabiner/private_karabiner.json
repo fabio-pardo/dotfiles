@@ -19,6 +19,17 @@
                         }
                     ],
                     "treat_as_built_in_keyboard": true
+                },
+                {
+                    "identifiers": {
+                        "is_keyboard": true,
+                        "is_pointing_device": true,
+                        "product_id": 45915,
+                        "vendor_id": 1133
+                    },
+                    "ignore": false,
+                    "ignore_vendor_events": true,
+                    "treat_as_built_in_keyboard": true
                 }
             ],
             "name": "Default profile",
