@@ -17,20 +17,6 @@
       ],
       "command": "npx"
     },
-    "virgin-voyages-mxp": {
-      "args": [
-        "/Users/fabio/dev/virgin_voyages/mxp-mcp-server/src/mcp_server/server.py",
-        "--transport",
-        "stdio"
-      ],
-      "command": "python",
-      "disabled": false,
-      "env": {
-        "MXP_BASE_URL": "http://10.2.225.226/API/MXP_Virgin.exe",
-        "MXP_PASSWORD": "!veryS4f3",
-        "MXP_USERNAME": "MXP-API-User"
-      }
-    },
     "survey-bigquery": {
       "args": [
         "--directory",
@@ -41,9 +27,27 @@
         "stdio"
       ],
       "command": "uv",
-      "disabled": false,
+      "disabled": true,
       "env": {
         "BIGQUERY_PROJECT_ID": "tech-ai-sandbox"
+      }
+    },
+    "survey-mcp-cloud": {
+      "disabled": false,
+      "url": "http://127.0.0.1:8080/mcp"
+    },
+    "virgin-voyages-mxp": {
+      "args": [
+        "/Users/fabio/dev/virgin_voyages/mxp-mcp-server/src/mcp_server/server.py",
+        "--transport",
+        "stdio"
+      ],
+      "command": "python",
+      "disabled": true,
+      "env": {
+        "MXP_BASE_URL": "http://10.2.225.226/API/MXP_Virgin.exe",
+        "MXP_PASSWORD": "!veryS4f3",
+        "MXP_USERNAME": "MXP-API-User"
       }
     }
   },
