@@ -47,3 +47,4 @@ theme = Gruvbox Dark
 font-family = Hack Nerd Font Mono
 title = "Terminal"
 macos-titlebar-proxy-icon = hidden
+keybind = shift+enter=text:\x1b\r
