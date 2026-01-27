@@ -3,6 +3,7 @@ return {
   -- Main copilot plugin
   {
     "zbirenbaum/copilot.lua",
+    enabled = false,
     cmd = "Copilot",
     build = ":Copilot auth",
     event = "BufReadPost",
