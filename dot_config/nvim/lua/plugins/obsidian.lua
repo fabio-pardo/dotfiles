@@ -3,64 +3,68 @@ local vault_path = vim.fn.expand("~/Library/Mobile Documents/iCloud~md~obsidian/
 
 -- Create daily notes in main vault + work subdirs (qued, vv)
 local function create_linked_dailies()
+  local Path = require("obsidian.path")
+  local Note = require("obsidian.note")
+
   local date = os.date("%Y-%m-%d")
   local month = os.date("%Y-%m")
   local alias = os.date("%B %-d, %Y")
+  local vault = Path.new(vault_path)
 
-  -- Paths for all three dailies (with month subfolders)
-  local main_daily_dir = vault_path .. "/2. areas/daily/" .. month
-  local qued_daily_dir = vault_path .. "/1. projects/qued/2. areas/daily/" .. month
-  local vv_daily_dir = vault_path .. "/1. projects/vv/2. areas/daily/" .. month
-  local filename = date .. ".md"
+  -- Define the three daily notes to create
+  local daily = {
+    {
+      id = date,
+      dir = "1. projects/qued/daily/" .. month,
+      aliases = { alias },
+      tags = { "daily", "qued" },
+    },
+    {
+      id = date,
+      dir = "1. projects/vv/daily/" .. month,
+      aliases = { alias },
+      tags = { "daily", "vv" },
+    },
+    {
+      id = date,
+      dir = "2. areas/daily/" .. month,
+      aliases = { alias },
+      tags = { "daily" },
+    },
+  }
 
-  -- Ensure directories exist
-  vim.fn.mkdir(main_daily_dir, "p")
-  vim.fn.mkdir(qued_daily_dir, "p")
-  vim.fn.mkdir(vv_daily_dir, "p")
+  local main_note
+  for _, daily in ipairs(daily) do
+    local full_dir = vault / daily.dir
+    vim.fn.mkdir(tostring(full_dir), "p")
 
-  -- Create work dailies (qued and vv) if they don't exist
-  local work_template = [[---
-aliases:
-  - "%s"
-tags:
-  - daily
----
+    local path = full_dir / (daily.id .. ".md")
+    if not path:exists() then
+      local note = Note.new(daily.id, daily.aliases, daily.tags, path)
+      note:save({ insert_frontmatter = true })
 
-# %s
-
-]]
-
-  for _, dir in ipairs({ qued_daily_dir, vv_daily_dir }) do
-    local path = dir .. "/" .. filename
-    if vim.fn.filereadable(path) == 0 then
-      local file = io.open(path, "w")
-      if file then
-        file:write(string.format(work_template, alias, alias))
-        file:close()
+      -- Add work links to main daily
+      if daily.dir:match("^2%. areas") then
+        local file = io.open(tostring(path), "a")
+        if file then
+          file:write("# " .. alias .. "\n\n")
+          file:write("## Work\n")
+          file:write("- [[1. projects/qued/daily/" .. month .. "/" .. date .. "|qued]]\n")
+          file:write("- [[1. projects/vv/daily/" .. month .. "/" .. date .. "|vv]]\n")
+          file:close()
+        end
       end
     end
-  end
 
-  -- Create main daily with links to work dailies
-  local main_path = main_daily_dir .. "/" .. filename
-  if vim.fn.filereadable(main_path) == 0 then
-    local main_template = "---\n"
-      .. 'aliases:\n  - "%s"\n'
-      .. "tags:\n  - daily\n"
-      .. "---\n\n"
-      .. "# %s\n\n"
-      .. "## Work\n"
-      .. "- [[1. projects/qued/2. areas/daily/%s/%s|qued]]\n"
-      .. "- [[1. projects/vv/2. areas/daily/%s/%s|vv]]\n\n"
-    local file = io.open(main_path, "w")
-    if file then
-      file:write(string.format(main_template, alias, alias, month, date, month, date))
-      file:close()
+    if daily.dir:match("^2%. areas") then
+      main_note = path
     end
   end
 
   -- Open the main daily
-  vim.cmd("edit " .. vim.fn.fnameescape(main_path))
+  if main_note then
+    vim.cmd("edit " .. vim.fn.fnameescape(tostring(main_note)))
+  end
 end
 
 -- filepath: lua/plugins/obsidian.lua
@@ -114,7 +118,7 @@ return {
 
     -- Daily notes configuration
     daily_notes = {
-      folder = "2. areas/daily/%Y-%m", -- Daily notes in month subfolders
+      folder = "2. areas/daily",
       date_format = "%Y-%m-%d", -- Format for daily note filenames
       alias_format = "%B %-d, %Y", -- Format for the alias (e.g., "December 8, 2025")
       default_tags = { "daily" }, -- Tags to add to daily notes
