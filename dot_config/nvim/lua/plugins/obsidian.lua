@@ -1,71 +1,4 @@
 local prefix = "<leader>o"
-local vault_path = vim.fn.expand("~/Library/Mobile Documents/iCloud~md~obsidian/Documents/my_vault")
-
--- Create daily notes in main vault + work subdirs (qued, vv)
-local function create_linked_dailies()
-  local Path = require("obsidian.path")
-  local Note = require("obsidian.note")
-
-  local date = os.date("%Y-%m-%d")
-  local month = os.date("%Y-%m")
-  local alias = os.date("%B %-d, %Y")
-  local vault = Path.new(vault_path)
-
-  -- Define the three daily notes to create
-  local daily = {
-    {
-      id = date,
-      dir = "1. projects/qued/daily/" .. month,
-      aliases = { alias },
-      tags = { "daily", "qued" },
-    },
-    {
-      id = date,
-      dir = "1. projects/vv/daily/" .. month,
-      aliases = { alias },
-      tags = { "daily", "vv" },
-    },
-    {
-      id = date,
-      dir = "2. areas/daily/" .. month,
-      aliases = { alias },
-      tags = { "daily" },
-    },
-  }
-
-  local main_note
-  for _, daily in ipairs(daily) do
-    local full_dir = vault / daily.dir
-    vim.fn.mkdir(tostring(full_dir), "p")
-
-    local path = full_dir / (daily.id .. ".md")
-    if not path:exists() then
-      local note = Note.new(daily.id, daily.aliases, daily.tags, path)
-      note:save({ insert_frontmatter = true })
-
-      -- Add work links to main daily
-      if daily.dir:match("^2%. areas") then
-        local file = io.open(tostring(path), "a")
-        if file then
-          file:write("# " .. alias .. "\n\n")
-          file:write("## Work\n")
-          file:write("- [[1. projects/qued/daily/" .. month .. "/" .. date .. "|qued]]\n")
-          file:write("- [[1. projects/vv/daily/" .. month .. "/" .. date .. "|vv]]\n")
-          file:close()
-        end
-      end
-    end
-
-    if daily.dir:match("^2%. areas") then
-      main_note = path
-    end
-  end
-
-  -- Open the main daily
-  if main_note then
-    vim.cmd("edit " .. vim.fn.fnameescape(tostring(main_note)))
-  end
-end
 
 -- filepath: lua/plugins/obsidian.lua
 return {
@@ -89,7 +22,7 @@ return {
     { prefix .. "w", "<cmd>Obsidian workspace<CR>", desc = "Workspace" },
     { prefix .. "r", "<cmd>Obsidian rename<CR>", desc = "Rename" },
     { prefix .. "i", "<cmd>Obsidian paste_img<CR>", desc = "Paste Image" },
-    { prefix .. "d", create_linked_dailies, desc = "Daily Note" },
+    { prefix .. "d", "<cmd>Obsidian today<CR>", desc = "Daily Note" },
   },
   opts = {
     -- Disable legacy commands (ObsidianX) in favour of new format (Obsidian x)
@@ -97,7 +30,15 @@ return {
     workspaces = {
       {
         name = "personal",
-        path = "~/Library/Mobile Documents/iCloud~md~obsidian/Documents/my_vault",
+        path = "~/Library/Mobile Documents/iCloud~md~obsidian/Documents/personal",
+      },
+      {
+        name = "qued",
+        path = "~/Library/Mobile Documents/iCloud~md~obsidian/Documents/qued",
+      },
+      {
+        name = "vv",
+        path = "~/Library/Mobile Documents/iCloud~md~obsidian/Documents/vv",
       },
     },
     log_level = vim.log.levels.INFO,
@@ -112,17 +53,17 @@ return {
       create_new = true,
     },
 
-    -- New notes go into the Notes subdirectory
-    notes_subdir = "Notes",
+    -- New notes go into the notes subdirectory
+    notes_subdir = "notes",
     new_notes_location = "notes_subdir",
 
     -- Daily notes configuration
     daily_notes = {
       folder = "2. areas/daily",
-      date_format = "%Y-%m-%d", -- Format for daily note filenames
-      alias_format = "%B %-d, %Y", -- Format for the alias (e.g., "December 8, 2025")
-      default_tags = { "daily" }, -- Tags to add to daily notes
-      workdays_only = false, -- Set true to skip weekends with yesterday/tomorrow commands
+      date_format = "%Y-%m-%d",
+      alias_format = "%B %-d, %Y",
+      default_tags = { "daily" },
+      workdays_only = false,
     },
 
     -- Prepend date to new note filenames
@@ -143,9 +84,6 @@ return {
     end,
     -- Either 'wiki' or 'markdown'.
     preferred_link_style = "wiki",
-    -- templates = {
-    --   folder = "Templates",
-    -- },
     picker = {
       -- Set your preferred picker. Can be one of 'telescope.nvim', 'fzf-lua', 'mini.pick' or 'snacks.pick'.
       name = "snacks.pick",
